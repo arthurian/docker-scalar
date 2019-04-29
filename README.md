@@ -1,5 +1,5 @@
-PHP Apache MySQL Docker Demo
------------------------------
+Scalar Docker Environment
+--------------------------
 
 Ensure that you have [Docker](https://docker.com/) installed.
 
