@@ -1,29 +1,51 @@
 version: "3.2"
 services:
   php:
-    build: './php/'
-    networks:
-      - backend
+    build:
+      context: './php/'
+      args:
+        - 'WITH_XDEBUG=true'
     volumes:
       - ./scalar/:/var/www/html/
+    links:
+      - mysql
+    networks:
+      - scalarnet
+    environment:
+      SCALAR_DB_HOSTNAME: mysql
+      SCALAR_DB_USERNAME: scalar
+      SCALAR_DB_PASSWORD: scalar
+      SCALAR_DB_DATABASE: scalar_store
+      SCALAR_ENCRYPTION_KEY: secret-enc-123
+      SCALAR_SHASALT: secret-salt-123
+      SCALAR_COOKIE_PREFIX: scalar
+      SCALAR_COOKIE_DOMAIN: localhost
+      XDEBUG_CONFIG: "idekey=PHPSTORM remote_host=host.docker.internal remote_port=9001"
+      PHP_IDE_CONFIG: "serverName=scalar-server"
   apache:
     build: './apache/'
     depends_on:
       - php
       - mysql
-    networks:
-      - frontend
-      - backend
     ports:
       - "8080:80"
+    networks:
+      - scalarnet
     volumes:
       - ./scalar/:/var/www/html/
   mysql:
     image: mysql:5.6.40
+    restart: always
     networks:
-      - backend
+      - scalarnet
     environment:
-      - MYSQL_ROOT_PASSWORD=rootpassword
+      - MYSQL_ROOT_PASSWORD=rootpass
+      - MYSQL_USER=scalar
+      - MYSQL_PASSWORD=scalar
+      - MYSQL_DATABASE=scalar_store
+      - MYSQL_HOST=localhost
+    volumes:
+      - ./scalar/:/var/www/html/
 networks:
-  frontend:
-  backend:
+  scalarnet:
+
