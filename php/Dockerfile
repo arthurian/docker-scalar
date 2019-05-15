@@ -4,7 +4,7 @@ ARG WITH_XDEBUG=false
 
 RUN apk update; \
     apk upgrade; \
-    apk add --no-cache libmcrypt-dev libltdl $PHPIZE_DEPS
+    apk add --no-cache mysql-client libmcrypt-dev libltdl $PHPIZE_DEPS
 
 RUN docker-php-ext-install mysqli \
     && pecl install mcrypt-1.0.2 && docker-php-ext-enable mcrypt

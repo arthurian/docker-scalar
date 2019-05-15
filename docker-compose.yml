@@ -44,8 +44,6 @@ services:
       - MYSQL_PASSWORD=scalar
       - MYSQL_DATABASE=scalar_store
       - MYSQL_HOST=localhost
-    volumes:
-      - ./scalar/:/var/www/html/
 networks:
   scalarnet:
 
