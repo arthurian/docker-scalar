@@ -20,8 +20,6 @@ services:
       SCALAR_SHASALT: secretsalt
       SCALAR_COOKIE_PREFIX: scalar
       SCALAR_COOKIE_DOMAIN: localhost
-      SCALAR_AUTH_PLUGIN: CasAuth
-      SCALAR_USE_AUTH_PLUGIN: 1
       XDEBUG_CONFIG: "idekey=PHPSTORM remote_host=host.docker.internal remote_port=9001"
       PHP_IDE_CONFIG: "serverName=scalar-server"
   apache:
