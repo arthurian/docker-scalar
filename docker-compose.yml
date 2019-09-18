@@ -7,19 +7,21 @@ services:
         - 'WITH_XDEBUG=true'
     volumes:
       - ./scalar/:/var/www/html/
-    links:
-      - mysql
     networks:
       - scalarnet
+    env_file:
+      - secrets.env
     environment:
       SCALAR_DB_HOSTNAME: mysql
       SCALAR_DB_USERNAME: scalar
       SCALAR_DB_PASSWORD: scalar
       SCALAR_DB_DATABASE: scalar_store
-      SCALAR_ENCRYPTION_KEY: secret-enc-123
-      SCALAR_SHASALT: secret-salt-123
+      SCALAR_ENCRYPTION_KEY: secretkey
+      SCALAR_SHASALT: secretsalt
       SCALAR_COOKIE_PREFIX: scalar
       SCALAR_COOKIE_DOMAIN: localhost
+      SCALAR_AUTH_PLUGIN: CasAuth
+      SCALAR_USE_AUTH_PLUGIN: 1
       XDEBUG_CONFIG: "idekey=PHPSTORM remote_host=host.docker.internal remote_port=9001"
       PHP_IDE_CONFIG: "serverName=scalar-server"
   apache:
@@ -38,6 +40,8 @@ services:
     restart: always
     networks:
       - scalarnet
+    ports:
+      - "3306:3306"
     environment:
       - MYSQL_ROOT_PASSWORD=rootpass
       - MYSQL_USER=scalar
